@@ -5,3 +5,4 @@ setupnavigation();
 
 const products =  await fetchProducts();
 renderProducts(products);
+renderCart();

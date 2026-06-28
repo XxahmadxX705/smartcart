@@ -1,4 +1,4 @@
-import {addToCart , getcart, gettotal} from './cart.js';
+import {addToCart , getcart, gettotal, incrementQuantity, decrementQuantity, removeFromCart} from './cart.js';
 
 
 export function renderProducts(products) {
@@ -32,7 +32,30 @@ export function renderCart() {
 
     getcart().forEach(product => {
         const item = document.createElement('div');
-        item.innerHTML = ` ${product.title} - $${product.price}`;
+        item.className = 'cart-row';
+        item.innerHTML = `
+         ${product.title} - $${product.price} -${product.quantity}
+
+         <button class="minus">-</button>
+         <button class="plus">+</button>
+         <button class="remove">Remove</button>
+         `;
+        
+         item.querySelector('.plus').addEventListener('click', () =>{
+            incrementQuantity(product.id);
+            renderCart();
+        });
+
+        item.querySelector('.minus').addEventListener('click', () =>{
+            decrementQuantity(product.id);
+            renderCart();
+        });
+
+        item.querySelector('.remove').addEventListener('click', () =>{
+            removeFromCart(product.id);
+            renderCart();
+        });
+
         cartitem.appendChild(item);
     });
 
