@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="sidebar">
+        <h1>SmartCart</h1>
+        <nav>
+            <section id="dashboard" class="menu-item active">
+              <span>🏠</span>
+               Dashboard
+            </section><br>
+
+            <section id="products" class="menu-item">
+                <span>📦</span>
+                 Products
+             </section><br>
+
+            <section id="cart" class="menu-item">
+                 <span>🛒</span>
+                     Cart
+            </section><br>
+
+            <section id="budget" class="menu-item">
+                 <span>💰</span>
+                    Budget
+            </section><br>
+
+             <section id="analytics" class="menu-item">
+                <span>📊</span>
+                 Analytics
+             </section><br>
+
+             <section id="settings" class="menu-item">
+                <span>⚙️</span>
+                  Settings
+             </section><br>
+        </nav>
+    </div>
+
+    <main class="content">
+
+        <section class="view" data-view="dashboard">
+            <h2>🏠 Dashboard</h2>
+            <p>Welcome to SmartCart!</p>
+        </section>
+
+        <section class="view" data-view="products" hidden>
+            <h2>📦 Products</h2>
+            <div id="product-list"></div>
+        </section>
+
+        <section class="view" data-view="cart" hidden>
+            <h2>🛒 Cart</h2>
+            <p>Your cart is empty.</p>
+        </section>
+
+        <section class="view" data-view="budget" hidden>
+            <h2>💰 Budget</h2>
+        </section>
+
+        <section class="view" data-view="analytics" hidden>
+            <h2>📊 Analytics</h2>
+        </section>
+
+        <section class="view" data-view="settings" hidden>
+            <h2>⚙️ Settings</h2>
+        </section>
+
+    </main>
+
+<script type="module" src="javascript/main.js"></script>
+</body>
+</html>
