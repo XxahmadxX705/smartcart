@@ -13,18 +13,14 @@ body{
     align-items: center;
     margin: 0;
 }
-section {
+.menu-item {
     display: flex;
     align-items: center;
-    padding: 10px 0;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    padding: 15px;
+    border-radius: 10px;
     cursor: pointer;
-}
-.menu-item {
-  color: rgb(0, 0, 0);
-  text-decoration: none;
-  padding: 15px;
-  display: block;
-  border-radius: 10px;
 }
 .menu-item.active {
     font-weight: bold;
