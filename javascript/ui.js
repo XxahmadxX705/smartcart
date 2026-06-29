@@ -1,9 +1,11 @@
 import {addToCart , getcart, gettotal, incrementQuantity, decrementQuantity, removeFromCart} from './cart.js';
 import { budgetCounter } from './budget.js';
 
+let allProducts = [];
 
 export function renderProducts(products) {
     const productlist = document.getElementById('product-list');
+    productlist.innerHTML = ``;
 
     products.forEach(product =>{
         const card = document.createElement('div');
@@ -25,6 +27,39 @@ export function renderProducts(products) {
 
         productlist.appendChild(card);
     });
+}
+
+export function setupProducts(products) {
+    allProducts = products;
+    renderProducts(products);
+    populateCategories(products);
+ 
+    document.getElementById('search-input').addEventListener('input', applyFilters);
+    document.getElementById('category-filter').addEventListener('change', applyFilters);
+}
+
+function populateCategories(products) {
+    const select = document.getElementById('category-filter');
+    const categories = [...new Set(products.map(p => p.category))];
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.innerText = category;
+        select.appendChild(option);
+    });
+}
+
+function applyFilters() {
+    const search = document.getElementById('search-input').value.toLowerCase();
+    const category = document.getElementById('category-filter').value;
+
+    const filtered = allProducts.filter(product => {
+        const matchesSearch = product.title.toLowerCase().includes(search);
+        const matchesCategory = category === 'all' || product.category === category;
+
+        return matchesSearch && matchesCategory;
+    });
+    renderProducts(filtered);
 }
 
 export function showtoast(message) {
@@ -98,10 +133,46 @@ export function renderBudget() {
 export function setupBudget() {
     const button = document.getElementById('save-budget');
     button.addEventListener('click', () => {
-        const amount = parseFloat((document.getElementById('budget-input').value) || 0);
+        const input = document.getElementById('budget-input');
+        try{
+            const amount = parseFloat(input.value);
+            if (isNaN(amount) || amount < 0){
+                throw new Error('Please enter a valid budget amount.');
+            }
+
         budgetCounter.setBudget(amount);
         renderBudget();
+        showtoast('budget saved');
+        }
+
+        catch (error) {
+            showtoast(error.message);
+        }
     });
+}
+
+
+export function setupCopyCart() {
+    document.getElementById('copy-cart').addEventListener('click', async() => {
+        const cart = getcart();
+
+        if (cart.length === 0) {
+            showtoast('Cart is empty. Nothing to copy.');
+            return;
+        }
+
+        const text = cart.map(item => `${item.title} * ${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`).join('\n');
+
+        try {
+            await navigator.clipboard.writeText(text);
+            showtoast('Cart list copied to clipboard!');
+        }
+        catch (error){
+            showtoast('Failed to copy cart list. Please try again.');
+        }
+
+    });
+
 }
 
 export function setupnavigation() {
