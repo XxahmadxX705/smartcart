@@ -164,3 +164,35 @@ button:hover {
     font-size: 20px;
     color: #2d3436;
 }
+ 
+.toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background-color: #2d3436;
+    color: #ffffff;
+    padding: 14px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 1000;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+#budget-input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-right: 8px;
+}
+
+.budget-summary {
+    margin-top: 20px;
+    font-size: 18px;
+}

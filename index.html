@@ -63,6 +63,15 @@
 
         <section class="view" data-view="budget" hidden>
             <h2>💰 Budget</h2>
+            <input type="number" id="budget-input" placeholder="set your budget">
+            <button id="save-budget">Save Budget</button>
+
+            <div id="budget-summary">
+                <p>Budget: $<span id="budget-amount">$0.00</span></p>
+                <p>Spend: $<span id="spend-amount">$0.00</span></p>
+                <p>Remaining: $<span id="remaining-amount">$0.00</span></p>
+            </div>
+
         </section>
 
         <section class="view" data-view="analytics" hidden>
