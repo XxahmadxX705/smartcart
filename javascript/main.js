@@ -1,10 +1,11 @@
 import { fetchProducts } from './api.js';
-import { renderProducts , setupnavigation , renderCart , setupBudget , renderBudget } from './ui.js';
+import { setupProducts , setupnavigation , renderCart , setupBudget , renderBudget , setupCopyCart } from './ui.js';
 
 setupnavigation();
 setupBudget();
+setupCopyCart();
 
 const products =  await fetchProducts();
-renderProducts(products);
+setupProducts(products);
 renderCart();
 renderBudget();
