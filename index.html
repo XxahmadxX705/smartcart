@@ -35,11 +35,6 @@
                 <span>📊</span>
                  Analytics
              </section><br>
-
-             <section id="settings" class="menu-item">
-                <span>⚙️</span>
-                  Settings
-             </section><br>
         </nav>
     </div>
 
@@ -47,7 +42,33 @@
 
         <section class="view" data-view="dashboard">
             <h2>🏠 Dashboard</h2>
-            <p>Welcome to SmartCart!</p>
+            <p class="dashboard-welcome">Welcome back! Here's your shopping overview.</p>
+
+            <div id="dashboard-summary">
+                <div class="stat-card">
+                    <span class="stat-icon">🛒</span>
+                    <div class="stat-info">
+                        <span class="stat-label">Total Items</span>
+                        <span class="stat-value"><span id="summary-items">0</span></span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-icon">💵</span>
+                    <div class="stat-info">
+                        <span class="stat-label">Total Spent</span>
+                        <span class="stat-value">$<span id="summary-spent">0.00</span></span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-icon">💰</span>
+                    <div class="stat-info">
+                        <span class="stat-label">Budget Left</span>
+                        <span class="stat-value">$<span id="summary-remaining">0.00</span></span>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section class="view" data-view="products" hidden>
@@ -62,29 +83,53 @@
         <section class="view" data-view="cart" hidden>
             <h2>🛒 Cart</h2>
             <div id="cart-items"></div>
-            <h3 id="cart-total">Total: $0.00</h3>
-            <button id="copy-cart">Copy Cart list</button>
+            <div class="cart-footer">
+                <h3 id="cart-total">Total: $0.00</h3>
+                <button id="copy-cart">📋 Copy Cart List</button>
+            </div>
         </section>
 
         <section class="view" data-view="budget" hidden>
             <h2>💰 Budget</h2>
-            <input type="number" id="budget-input" placeholder="set your budget">
-            <button id="save-budget">Save Budget</button>
+            <div class="budget-form">
+                <input type="number" id="budget-input" placeholder="Set your budget">
+                <button id="save-budget">Save Budget</button>
+            </div>
 
             <div id="budget-summary">
-                <p>Budget: $<span id="budget-amount">$0.00</span></p>
-                <p>Spend: $<span id="spend-amount">$0.00</span></p>
-                <p>Remaining: $<span id="remaining-amount">$0.00</span></p>
+                <div class="stat-card">
+                    <span class="stat-icon">🎯</span>
+                    <div class="stat-info">
+                        <span class="stat-label">Budget</span>
+                        <span class="stat-value">$<span id="budget-amount">0.00</span></span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-icon">💵</span>
+                    <div class="stat-info">
+                        <span class="stat-label">Spent</span>
+                        <span class="stat-value">$<span id="spend-amount">0.00</span></span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-icon">💰</span>
+                    <div class="stat-info">
+                        <span class="stat-label">Remaining</span>
+                        <span class="stat-value">$<span id="remaining-amount">0.00</span></span>
+                    </div>
+                </div>
             </div>
 
         </section>
 
         <section class="view" data-view="analytics" hidden>
             <h2>📊 Analytics</h2>
-        </section>
-
-        <section class="view" data-view="settings" hidden>
-            <h2>⚙️ Settings</h2>
+            <div class="chart-card">
+                <h3 class="chart-title">Spending by Category</h3>
+                <canvas id="spending-chart" width="525" height="300"></canvas>
+            </div>
         </section>
 
     </main>
