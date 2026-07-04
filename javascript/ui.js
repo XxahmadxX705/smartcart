@@ -126,6 +126,10 @@ export function renderBudget() {
     const spend = gettotal();
     const remaining = budget - spend;
 
+    if (remaining < 0) {
+    alert('You are over budget!');
+    }
+
     document.getElementById('budget-amount').innerText = budget.toFixed(2);
     document.getElementById('spend-amount').innerText = spend.toFixed(2);
     
@@ -213,6 +217,8 @@ export function renderDashbord(){
     document.getElementById('summary-items').innerHTML = totalItems;
     document.getElementById('summary-spent').innerHTML = spent.toFixed(2);
     document.getElementById('summary-remaining').innerHTML = budget.toFixed(2);
+    document.getElementById('summary-remaining').style.color = budget < 0 ? 'red' : ''; 
+    
 }
 export function renderAnalytics() {
     const canvas = document.getElementById('spending-chart');
@@ -231,7 +237,7 @@ export function renderAnalytics() {
     const values = Object.values(spending); 
 
     if (categories.length === 0){
-        ctx.fillStyle = '#636e72';
+        ctx.fillStyle = '#637271';
         ctx.font = '16px Segoe UI';
         ctx.fillText('no data yet - add items to your cart', 20, 40);
         return;
