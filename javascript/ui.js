@@ -85,9 +85,10 @@ export function renderCart() {
         const item = document.createElement('div');
         item.className = 'cart-row';
         item.innerHTML = `
-         ${product.title} - $${product.price}
+         <img src="${product.thumbnail}" class="cart-thumb">
+         <span class="cart-name">${product.title} - $${product.price}</span>
 
-         <span>
+         <span class="cart-controls">
             <button class="minus">-</button>
             <span style="font-size: 16px;">${product.quantity}</span>
             <button class="plus">+</button>
@@ -115,11 +116,19 @@ export function renderCart() {
 
     document.getElementById('cart-total').innerText = `Total: $${gettotal().toFixed(2)}`;
     renderBudget();
+
+    renderDashbord();
+    renderAnalytics();
 }
+
 export function renderBudget() {
     const budget = budgetCounter.getBudget();
     const spend = gettotal();
     const remaining = budget - spend;
+
+    if (remaining < 0) {
+    alert('You are over budget!');
+    }
 
     document.getElementById('budget-amount').innerText = budget.toFixed(2);
     document.getElementById('spend-amount').innerText = spend.toFixed(2);
@@ -197,4 +206,62 @@ export function setupnavigation() {
 
         });
     });
+}
+
+export function renderDashbord(){
+    const cart = getcart();
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const spent = gettotal();
+    const budget = budgetCounter.getBudget() - spent;
+    
+    document.getElementById('summary-items').innerHTML = totalItems;
+    document.getElementById('summary-spent').innerHTML = spent.toFixed(2);
+    document.getElementById('summary-remaining').innerHTML = budget.toFixed(2);
+    document.getElementById('summary-remaining').style.color = budget < 0 ? 'red' : ''; 
+    
+}
+export function renderAnalytics() {
+    const canvas = document.getElementById('spending-chart');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const cart = getcart();
+
+    const spending = {};
+
+    cart.forEach(item => {
+        spending[item.category] = (spending[item.category] || 0) + (item.price * item.quantity);
+    });
+
+    const categories = Object.keys(spending);
+    const values = Object.values(spending); 
+
+    if (categories.length === 0){
+        ctx.fillStyle = '#637271';
+        ctx.font = '16px Segoe UI';
+        ctx.fillText('no data yet - add items to your cart', 20, 40);
+        return;
+    }
+
+    const maxValue = Math.max(...values);
+    const barWidth = 60;
+    const gap = 40;
+    const basey = 260;
+    const maxbarHeight = 200;
+
+    categories.forEach((category, index) => {
+        const x = 40 + index * (barWidth + gap);
+        const barHeight = (values[index] / maxValue) * maxbarHeight;
+        const y = basey - barHeight;
+
+        ctx.fillStyle = '#4f46e5';
+        ctx.fillRect(x, y, barWidth, barHeight);
+
+        ctx.fillStyle = '#2d3436';
+        ctx.font = '12px Segoe UI';
+        ctx.fillText('$' + values[index].toFixed(2), x, y - 6);
+        ctx.fillText(category, x, basey + 16);
+
+    })
+
 }
