@@ -1,4 +1,5 @@
-import {addToCart , getcart, gettotal, incrementQuantity, decrementQuantity, removeFromCart} from './cart.js';
+import { addToCart, getcart, gettotal, incrementQuantity, decrementQuantity, removeFromCart, clearCart } from './cart.js';
+import { isLoggedIn, login, logout, getCurrentUser } from './auth.js';
 import { budgetCounter } from './budget.js';
 
 let allProducts = [];
@@ -182,6 +183,186 @@ export function setupCopyCart() {
 
     });
 
+}
+
+export function setupClearCart() {
+    document.getElementById('clear-cart').addEventListener('click', () => {
+        const cart = getcart();
+
+        if(cart.length === 0 ){
+            showtoast('Cart is empty. Nothing to clear.');
+            return;
+        }
+
+        if(confirm('Are you sure you want to clear the cart?')){
+            clearCart();
+            renderCart();
+            showtoast('Cart cleared successfully!');
+        }
+    });
+}
+
+export function setupLogin(startApp) {
+    const loginPage = document.getElementById('login-page');
+    const app = document.getElementById('app');
+
+    function showApp() {
+        loginPage.hidden = true;
+        app.hidden = false;
+        startApp().catch(() => {
+            showtoast('Failed to load products. Please refresh the page.');
+        });
+    }
+
+    function showLogin() {
+        loginPage.hidden = false;
+        app.hidden = true;
+    }
+
+    if (isLoggedIn()) {
+        showApp();
+    } 
+    
+    else {
+        showLogin();
+    }
+
+    document.getElementById('login-btn').addEventListener('click', () => {
+        const username = document.getElementById('login-username').value.trim();
+        const password = document.getElementById('login-password').value.trim();
+
+        if (!username || !password) {
+            showtoast('Please enter a username and password.');
+            return;
+        }
+
+        if (login(username, password)) {
+            showtoast(`Welcome, ${username}!`);
+            showApp();
+        } 
+        
+        else {
+            showtoast('Invalid username or password.');
+        }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        logout();
+        showLogin();
+        document.getElementById('login-username').value = '';
+        document.getElementById('login-password').value = '';
+        showtoast('Logged out.');
+    });
+}
+
+const CHECKOUT_TAX_RATE = 0.10;
+const CHECKOUT_SHIPPING = 5.99;
+
+function fillCheckoutForm(cart) {
+    const itemsDiv = document.getElementById('checkout-items');
+    itemsDiv.innerHTML = cart.map(item =>
+        `<div>${item.title} × ${item.quantity} — $${(item.price * item.quantity).toFixed(2)}</div>`
+    ).join('');
+
+    const subtotal = gettotal();
+    const tax = subtotal * CHECKOUT_TAX_RATE;
+    const total = subtotal + tax + CHECKOUT_SHIPPING;
+
+    document.getElementById('checkout-subtotal').innerText = '$' + subtotal.toFixed(2);
+    document.getElementById('checkout-tax').innerText = '$' + tax.toFixed(2);
+    document.getElementById('checkout-shipping').innerText = '$' + CHECKOUT_SHIPPING.toFixed(2);
+    document.getElementById('checkout-total').innerText = '$' + total.toFixed(2);
+}
+
+function showCheckoutStep(activeStep) {
+    const formStep = document.getElementById('checkout-form-step');
+    const processingStep = document.getElementById('checkout-processing');
+    const successStep = document.getElementById('checkout-success');
+    const declinedStep = document.getElementById('checkout-declined');
+
+    formStep.hidden = activeStep !== formStep;
+    processingStep.hidden = activeStep !== processingStep;
+    successStep.hidden = activeStep !== successStep;
+    declinedStep.hidden = activeStep !== declinedStep;
+}
+
+export function setupCheckout() {
+    const modal = document.getElementById('checkout-modal');
+    const formStep = document.getElementById('checkout-form-step');
+    const processingStep = document.getElementById('checkout-processing');
+    const successStep = document.getElementById('checkout-success');
+    const declinedStep = document.getElementById('checkout-declined');
+
+    document.getElementById('checkout-btn').addEventListener('click', () => {
+        const cart = getcart();
+
+        if (cart.length === 0) {
+            showtoast('Cart is empty. Nothing to checkout.');
+            return;
+        }
+
+        fillCheckoutForm(cart);
+        showCheckoutStep(formStep);
+        modal.hidden = false;
+    });
+
+    document.getElementById('close-checkout').addEventListener('click', () => {
+        modal.hidden = true;
+    });
+
+    document.getElementById('place-order-btn').addEventListener('click', () => {
+        const name = document.getElementById('ship-name').value.trim();
+        const email = document.getElementById('ship-email').value.trim();
+        const address = document.getElementById('ship-address').value.trim();
+        const city = document.getElementById('ship-city').value.trim();
+        const zip = document.getElementById('ship-zip').value.trim();
+
+        if (!name || !email || !address || !city || !zip) {
+            showtoast('Please fill in all fields.');
+            return;
+        }
+
+        if (!email.includes('@')) {
+            showtoast('Please enter a valid email address.');
+            return;
+        }
+
+        showCheckoutStep(processingStep);
+
+        setTimeout(() => {
+            const subtotal = gettotal();
+            const tax = subtotal * CHECKOUT_TAX_RATE;
+            const total = subtotal + tax + CHECKOUT_SHIPPING;
+            const budget = budgetCounter.getBudget();
+
+            if (budget > 0 && total > budget) {
+                showCheckoutStep(declinedStep);
+                document.getElementById('declined-name').innerText = name;
+                document.getElementById('declined-total').innerText = '$' + total.toFixed(2);
+                document.getElementById('declined-budget').innerText = '$' + budget.toFixed(2);
+                return;
+            }
+
+            const orderNum = 'SC-' + Date.now().toString().slice(-8);
+            document.getElementById('success-name').innerText = name;
+            document.getElementById('order-number').innerText = orderNum;
+            document.getElementById('success-total').innerText = '$' + total.toFixed(2);
+
+            showCheckoutStep(successStep);
+            clearCart();
+            renderCart();
+        }, 2000);
+    });
+
+    document.getElementById('close-success-btn').addEventListener('click', () => {
+        modal.hidden = true;
+        showCheckoutStep(formStep);
+    });
+
+    document.getElementById('close-declined-btn').addEventListener('click', () => {
+        modal.hidden = true;
+        showCheckoutStep(formStep);
+    });
 }
 
 export function setupnavigation() {

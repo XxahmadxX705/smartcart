@@ -47,3 +47,8 @@ export function removeFromCart(id) {
     cart = cart.filter(item => item.id !== id);
     savecart(cart);
 }
+
+export function clearCart() {
+    cart =[];
+    savecart(cart);
+}

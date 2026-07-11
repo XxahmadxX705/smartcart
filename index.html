@@ -7,7 +7,21 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<div id="login-page">
+    <div class="login-card">
+        <h1>SmartCart</h1>
+        <p class="login-subtitle">sign in to your account</p>
+
+        <input type="text" id="login-username" placeholder="Username">
+        <input type="password" id="login-password" placeholder="Password">
+
+        <button id="login-btn">Sign In</button>
+        <p class="login-hint">test: admin / 1234</p>
+    </div>
+</div>
     
+<div id="app" hidden>
     <div class="sidebar">
         <h1>SmartCart</h1>
         <nav>
@@ -36,6 +50,7 @@
                  Analytics
              </section><br>
         </nav>
+        <button id="logout-btn" class="logout-btn">Logout</button>
     </div>
 
     <main class="content">
@@ -85,7 +100,11 @@
             <div id="cart-items"></div>
             <div class="cart-footer">
                 <h3 id="cart-total">Total: $0.00</h3>
-                <button id="copy-cart">📋 Copy Cart List</button>
+                <div class="cart-actions">
+                    <button id="copy-cart">📋 Copy Cart List</button>
+                    <button id="clear-cart">🧹 Clear Cart</button>
+                    <button id="checkout-btn">💳 Checkout</ button>
+                </div>
             </div>
         </section>
 
@@ -133,6 +152,90 @@
         </section>
 
     </main>
+</div>
+
+    <!-- Fake Checkout Modal -->
+<div id="checkout-modal" class="modal" hidden>
+    <div class="modal-content">
+        <button id="close-checkout" class="modal-close">&times;</button>
+
+        <!-- Step 1: Checkout form -->
+        <div id="checkout-form-step">
+            <h2>Checkout</h2>
+
+            <!-- Order summary -->
+            <div class="checkout-section">
+                <h3>Order Summary</h3>
+                <div id="checkout-items"></div>
+                <div class="checkout-row">
+                    <span>Subtotal</span>
+                    <span id="checkout-subtotal">$0.00</span>
+                </div>
+                <div class="checkout-row">
+                    <span>Tax (10%)</span>
+                    <span id="checkout-tax">$0.00</span>
+                </div>
+                <div class="checkout-row">
+                    <span>Shipping</span>
+                    <span id="checkout-shipping">$5.99</span>
+                </div>
+                <div class="checkout-row checkout-total">
+                    <strong>Total</strong>
+                    <strong id="checkout-total">$0.00</strong>
+                </div>
+            </div>
+
+            <!-- Shipping info -->
+            <div class="checkout-section">
+                <h3>Shipping Information</h3>
+                <input type="text" id="ship-name" placeholder="Full Name" required>
+                <input type="email" id="ship-email" placeholder="Email" required>
+                <input type="text" id="ship-address" placeholder="Address" required>
+                <input type="text" id="ship-city" placeholder="City" required>
+                <input type="text" id="ship-zip" placeholder="ZIP Code" required>
+            </div>
+
+            <!-- Fake payment -->
+            <div class="checkout-section">
+                <h3>Payment (Test Only)</h3>
+                <input type="text" id="card-number" placeholder="Card Number (fake)" maxlength="19">
+                <div class="checkout-row-inputs">
+                    <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5">
+                    <input type="text" id="card-cvv" placeholder="CVV" maxlength="3">
+                </div>
+                <p class="checkout-note">⚠️ This is a fake checkout — no real payment is processed.</p>
+            </div>
+
+            <button id="place-order-btn" class="btn-success">Place Order</button>
+        </div>
+
+        <!-- Step 2: Processing -->
+        <div id="checkout-processing" hidden>
+            <h2>Processing...</h2>
+            <p>Please wait while we process your test order.</p>
+        </div>
+
+        <!-- Step 3: Success -->
+        <div id="checkout-success" hidden>
+            <h2>✅ Order Confirmed!</h2>
+            <p>Thank you, <span id="success-name"></span>!</p>
+            <p>Order #: <strong id="order-number"></strong></p>
+            <p>Total paid: <strong id="success-total"></strong></p>
+            <p class="checkout-note">This was a test order — nothing was actually charged.</p>
+            <button id="close-success-btn">Close</button>
+        </div>
+
+        <!-- Step 4: Card Declined -->
+        <div id="checkout-declined" hidden>
+            <h2>❌ Card Declined</h2>
+            <p>Sorry, <span id="declined-name"></span> — your order total exceeds your budget.</p>
+            <p>Order total: <strong id="declined-total"></strong></p>
+            <p>Your budget: <strong id="declined-budget"></strong></p>
+            <p class="checkout-note">Please adjust your cart or increase your budget and try again.</p>
+            <button id="close-declined-btn">Close</button>
+        </div>
+    </div>
+</div>
 
 <script type="module" src="javascript/main.js"></script>
 </body>

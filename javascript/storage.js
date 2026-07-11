@@ -14,4 +14,17 @@ export function savebudget(budget) {
 export function loadbudget(){
     const data = localStorage.getItem('budget'); 
     return data ? JSON.parse(data): 0 ;
+ }
+
+export function saveUser(user) {
+    localStorage.setItem('user', JSON.stringify(user));
+}
+
+export function loadUser(){
+    const data = localStorage.getItem('user');
+    return data ? JSON.parse(data) : null;
+}
+
+export function clearUser(){
+    localStorage.removeItem('user');
 }
