@@ -1,6 +1,7 @@
 import { addToCart, getcart, gettotal, incrementQuantity, decrementQuantity, removeFromCart, clearCart } from './cart.js';
 import { isLoggedIn, login, logout, getCurrentUser } from './auth.js';
 import { budgetCounter } from './budget.js';
+import { addOrder, getOrders, getOrdersTotal ,removeOrder , clearOrders } from './orders.js';
 
 let allProducts = [];
 
@@ -124,8 +125,8 @@ export function renderCart() {
 
 export function renderBudget() {
     const budget = budgetCounter.getBudget();
-    const spend = gettotal();
-    const remaining = budget - spend;
+    const spend = getOrdersTotal();
+    const remaining = budget - spend - gettotal();
 
     if (remaining < 0) {
     alert('You are over budget!');
@@ -201,6 +202,25 @@ export function setupClearCart() {
         }
     });
 }
+
+export function setupClearOrders() {
+    document.getElementById('clear-orders').addEventListener('click', () => {
+        if(getOrders().length === 0){
+            showtoast('No orders to clear.');
+            return;
+        }
+
+        if(confirm('Are you sure you want to clear the orders?')){
+            clearOrders();
+            renderOrders();
+            renderBudget();
+            renderDashbord();
+            renderAnalytics();
+            showtoast('Orders cleared successfully!');
+        }
+    });
+}
+
 
 export function setupLogin(startApp) {
     const loginPage = document.getElementById('login-page');
@@ -334,16 +354,35 @@ export function setupCheckout() {
             const tax = subtotal * CHECKOUT_TAX_RATE;
             const total = subtotal + tax + CHECKOUT_SHIPPING;
             const budget = budgetCounter.getBudget();
+            const remaining = budget - getOrdersTotal();
 
-            if (budget > 0 && total > budget) {
+            if (budget > 0 && total > remaining) {
                 showCheckoutStep(declinedStep);
                 document.getElementById('declined-name').innerText = name;
                 document.getElementById('declined-total').innerText = '$' + total.toFixed(2);
-                document.getElementById('declined-budget').innerText = '$' + budget.toFixed(2);
+                document.getElementById('declined-budget').innerText = '$' + remaining.toFixed(2);
                 return;
             }
 
             const orderNum = 'SC-' + Date.now().toString().slice(-8);
+
+            const cartSnapshot = getcart().map(item => ({
+                title: item.title,
+                price: item.price,
+                quantity: item.quantity,
+                thumbnail: item.thumbnail,
+                category: item.category,
+            }));
+            const order = {
+                id: orderNum,
+                date: new Date().toLocaleString(),
+                name: name,
+                items: cartSnapshot,
+                total: total
+            };
+
+            addOrder(order);
+
             document.getElementById('success-name').innerText = name;
             document.getElementById('order-number').innerText = orderNum;
             document.getElementById('success-total').innerText = '$' + total.toFixed(2);
@@ -351,6 +390,7 @@ export function setupCheckout() {
             showCheckoutStep(successStep);
             clearCart();
             renderCart();
+            renderOrders();
         }, 2000);
     });
 
@@ -392,26 +432,70 @@ export function setupnavigation() {
 export function renderDashbord(){
     const cart = getcart();
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    const spent = gettotal();
-    const budget = budgetCounter.getBudget() - spent;
+    const spent = getOrdersTotal();
+    const remaining = budgetCounter.getBudget() - spent - gettotal();
+    const orderCount = getOrders().length;
     
     document.getElementById('summary-items').innerHTML = totalItems;
+    document.getElementById('summary-orders').innerHTML = orderCount;
     document.getElementById('summary-spent').innerHTML = spent.toFixed(2);
-    document.getElementById('summary-remaining').innerHTML = budget.toFixed(2);
-    document.getElementById('summary-remaining').style.color = budget < 0 ? 'red' : ''; 
+    document.getElementById('summary-remaining').innerHTML = remaining.toFixed(2);
+    document.getElementById('summary-remaining').style.color = remaining < 0 ? 'red' : ''; 
     
 }
+
+export function renderOrders(){
+    const list = document.getElementById('orders-list');
+    const orders = getOrders();
+
+    if(orders.length === 0){
+        list.innerHTML = `<p>no orders has been made yet</p>`;
+        return;
+    }
+
+    list.innerHTML = '';
+
+    orders.forEach(order => {
+        const div = document.createElement('div');
+        div.className = 'order-card';
+        
+        const itemsHtml = order.items.map(item => `<div> ${item.title} * ${item.quantity} - $${(item.price * item.quantity).toFixed(2)}</div>`).join('');
+
+        div.innerHTML = ` 
+            <h3>order #${order.id}</h3>
+            <p>${new Date(order.date).toLocaleString()} - ${order.name}</p>
+            <div class="order-items">${itemsHtml}</div>
+            <div class="order-card-footer">
+                <strong>Total: $${order.total.toFixed(2)}</strong>
+                <button class="remove-order">Delete</button>
+            </div>
+        `;
+        div.querySelector('.remove-order').addEventListener('click', () => {
+            removeOrder(order.id);
+            renderOrders();
+            renderBudget();
+            renderDashbord();
+            renderAnalytics();
+            showtoast('Order deleted.');
+        });
+
+        list.appendChild(div);
+    });
+}
+
 export function renderAnalytics() {
     const canvas = document.getElementById('spending-chart');
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const cart = getcart();
+    const orders = getOrders();
 
     const spending = {};
 
-    cart.forEach(item => {
-        spending[item.category] = (spending[item.category] || 0) + (item.price * item.quantity);
+    orders.forEach(order => {
+        order.items.forEach(item => {
+            spending[item.category] = (spending[item.category] || 0) + (item.price * item.quantity);
+        });
     });
 
     const categories = Object.keys(spending);
@@ -420,7 +504,7 @@ export function renderAnalytics() {
     if (categories.length === 0){
         ctx.fillStyle = '#637271';
         ctx.font = '16px Segoe UI';
-        ctx.fillText('no data yet - add items to your cart', 20, 40);
+        ctx.fillText('no data yet - place an order first', 20, 40);
         return;
     }
 
