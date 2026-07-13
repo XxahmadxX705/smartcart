@@ -40,6 +40,11 @@
                      Cart
             </section><br>
 
+            <section id="orders" class="menu-item">
+                <span>🧾</span>
+                 Orders
+             </section><br>
+
             <section id="budget" class="menu-item">
                  <span>💰</span>
                     Budget
@@ -63,8 +68,16 @@
                 <div class="stat-card">
                     <span class="stat-icon">🛒</span>
                     <div class="stat-info">
-                        <span class="stat-label">Total Items</span>
+                        <span class="stat-label">cart Items</span>
                         <span class="stat-value"><span id="summary-items">0</span></span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-icon">🧾</span>
+                    <div class="stat-info">
+                        <span class="stat-label">Orders</span>
+                        <span class="stat-value"><span id="summary-orders">0</span></span>
                     </div>
                 </div>
 
@@ -103,8 +116,16 @@
                 <div class="cart-actions">
                     <button id="copy-cart">📋 Copy Cart List</button>
                     <button id="clear-cart">🧹 Clear Cart</button>
-                    <button id="checkout-btn">💳 Checkout</ button>
+                    <button id="checkout-btn">💳 Checkout</button>
                 </div>
+            </div>
+        </section>
+        
+        <section class="view" data-view="orders" hidden>
+            <h2>🧾 Orders</h2>
+            <div id="orders-list"></div>
+            <div class="orders-footer">
+                <button id="clear-orders">🧹 Clear Orders</button>
             </div>
         </section>
 

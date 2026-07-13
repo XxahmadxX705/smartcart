@@ -28,3 +28,11 @@ export function loadUser(){
 export function clearUser(){
     localStorage.removeItem('user');
 }
+export function saveOrder(orders) {
+    localStorage.setItem('orders', JSON.stringify(orders));
+}
+
+export function loadOrders(){
+    const data = localStorage.getItem('orders');
+    return data ? JSON.parse(data) : [];
+}

@@ -524,3 +524,39 @@ button:hover {
 .logout-btn:hover {
     background-color: #c0392b;
 }
+.order-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    max-width: 640px;
+}
+.order-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.order-card-footer .remove-order {
+    background-color: #e74c3c;
+}
+
+.order-card-footer .remove-order:hover {
+    background-color: #c0392b;
+}
+
+.orders-footer {
+    max-width: 640px;
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.order-items {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #636e72;
+}
