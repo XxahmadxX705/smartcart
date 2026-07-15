@@ -36,3 +36,11 @@ export function loadOrders(){
     const data = localStorage.getItem('orders');
     return data ? JSON.parse(data) : [];
 }
+export function saveTransactions(transactions) {
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+}
+
+export function loadTransactions() {
+    const data = localStorage.getItem('transactions');
+    return data ? JSON.parse(data) : [];
+}

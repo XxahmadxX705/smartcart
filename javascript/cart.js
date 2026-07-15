@@ -2,15 +2,20 @@ import {savecart, loadcart} from './storage.js';
 
 let cart = loadcart();
 
-export function addToCart(product) {
+export function addToCart(product , quantity = 1) {
+    const amount = Number(quantity);
+    if(isNaN(amount) || amount < 1) {
+        return;
+    }
+
     const exsisting = cart.find(item => item.id === product.id);
 
     if (exsisting) {
-        exsisting.quantity = exsisting.quantity +1;
+        exsisting.quantity = exsisting.quantity + amount;
         savecart(cart);
     }
     else {
-        cart.push({...product, quantity: 1});
+        cart.push({...product, quantity: amount});
         savecart(cart);
     }
     savecart(cart);
