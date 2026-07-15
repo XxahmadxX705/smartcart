@@ -17,14 +17,41 @@ export function renderProducts(products) {
             <h3>${product.title}</h3>
             <p>Price: $${product.price}</p>
             <p>${product.category}</p>
-            <button>Add to Cart</button>
+            
+            <div class="add-row">
+
+                <div class="qty-pill">
+                    <button type="button" class="qty-minus">−</button>
+                    <span class="qty-value">1</span>
+                    <button type="button" class="qty-plus">+</button>
+                </div>
+
+                <button type="button" class="add-cart-btn">Add to Cart</button>
+            </div>
         `;
 
-        const button = card.querySelector('button');
-        button.addEventListener('click', () => {
-            addToCart(product);
+       const qtyvalue = card.querySelector('.qty-value');
+       const minusbtn = card.querySelector('.qty-minus');
+       const plusbtn = card.querySelector('.qty-plus');
+       const addbtn = card.querySelector('.add-cart-btn');
+
+        minusbtn.addEventListener('click', () => {
+            let qty = parseInt(qtyvalue.innerText, 10);
+        
+            if (qty > 1) {
+                qtyvalue.innerText = qty - 1;
+            }
+       
+        });
+        plusbtn.addEventListener('click', () => {
+            let qty = parseInt(qtyvalue.innerText, 10);
+            qtyvalue.innerText = qty + 1;
+        });
+        addbtn.addEventListener('click', () => {
+            const quantity = parseInt(qtyvalue.innerText, 10);
+            addToCart(product, quantity);
             renderCart();
-            showtoast(`${product.title} has been added to the cart!`);
+            showtoast(`${product.title} (x${qty}) has been added to the cart!`);
         });
 
         productlist.appendChild(card);
@@ -139,24 +166,79 @@ export function renderBudget() {
     remainingElement.innerText = remaining.toFixed(2);
     remainingElement.style.color = remaining < 0 ? 'red' : ''; 
 
+    renderBudgetHistory();
 }
 
+export function renderBudgetHistory() {
+    const list = document.getElementById('transaction-list');
+    const transactions = budgetCounter.getTransactions();
+
+    if (transactions.length === 0){
+        list.innerHTML = `<p>no transactions yet</p>`;
+        return;
+    }
+
+    list.innerHTML = '';
+
+    [...transactions].reverse().forEach(tx => {
+        const div = document.createElement('div');
+        div.className = `transaction-item ${tx.type}`;
+        const sign = tx.type === 'deposit' ? '+' : '-';
+        const date = new Date(tx.date).toLocaleString();
+        div.innerHTML =`
+        <span class="tx-type">${tx.type}</span>
+        <span class="tx-amount">${sign}$${tx.amount.toFixed(2)}</span>
+        <span class="tx-date">${date}</span>
+        `;
+        list.appendChild(div);
+    });
+}
+
+
 export function setupBudget() {
-    const button = document.getElementById('save-budget');
-    button.addEventListener('click', () => {
-        const input = document.getElementById('budget-input');
+    const input = document.getElementById('budget-input');
+    const depositbtn = document.getElementById('deposit-btn');
+    const withdrawbtn = document.getElementById('withdraw-btn');
+
+    depositbtn.addEventListener('click', () => {
         try{
             const amount = parseFloat(input.value);
-            if (isNaN(amount) || amount < 0){
-                throw new Error('Please enter a valid budget amount.');
+
+            if (isNaN(amount) || amount <= 0){
+                throw new Error('Please enter a valid amount.');
             }
 
-        budgetCounter.setBudget(amount);
-        renderBudget();
-        showtoast('budget saved');
+            budgetCounter.deposit(amount);
+            renderBudget();
+            showtoast(`Deposited $${amount.toFixed(2)} successfully!`);
+            input.value = '';
+        }
+        catch (error){
+            showtoast(error.message);
+        }
+    });
+
+    withdrawbtn.addEventListener('click', () => {
+        try{
+            const amount = parseFloat(input.value);
+
+            if (isNaN(amount) || amount <= 0){
+                throw new Error('Please enter a valid amount.');
+            }
+
+            const remaining = budgetCounter.getBudget() - getOrdersTotal() - gettotal();
+
+            if (amount > remaining){
+                throw new Error('Not enough remaining budget.');
+            }
+
+            budgetCounter.withdraw(amount);
+            renderBudget();
+            showtoast(`Withdrawn $${amount.toFixed(2)} successfully!`);
+            input.value = '';
         }
 
-        catch (error) {
+        catch (error){
             showtoast(error.message);
         }
     });
