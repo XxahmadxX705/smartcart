@@ -35,9 +35,12 @@
                  Products
              </section><br>
 
-            <section id="cart" class="menu-item">
-                 <span>🛒</span>
-                     Cart
+             <section id="cart" class="menu-item">
+                <span class="nav-icon-wrap">
+                    🛒
+                    <span id="cart-count" class="cart-badge" hidden>0</span>
+                </span>
+                Cart
             </section><br>
 
             <section id="orders" class="menu-item">
@@ -252,11 +255,14 @@
 
         <!-- Step 4: Card Declined -->
         <div id="checkout-declined" hidden>
-            <h2>❌ Card Declined</h2>
-            <p>Sorry, <span id="declined-name"></span> — your order total exceeds your budget.</p>
-            <p>Order total: <strong id="declined-total"></strong></p>
-            <p>Your budget: <strong id="declined-budget"></strong></p>
-            <p class="checkout-note">Please adjust your cart or increase your budget and try again.</p>
+            <h2>❌ Budget Exceeded</h2>
+            <p>You don't have enough money to buy the items. Please check your budget and try again.</p>
+            <p>Your budget: <strong id="declined-budget">$0.00</strong></p>
+            <p>Items price: <strong id="declined-subtotal">$0.00</strong></p>
+            <p>Tax: <strong id="declined-tax">$0.00</strong></p>
+            <p>Shipping cost: <strong id="declined-shipping">$0.00</strong></p>
+            <p>Total price: <strong id="declined-total">$0.00</strong></p>
+            <p class="checkout-note">Adjust your cart or deposit more budget, then try again.</p>
             <button id="close-declined-btn">Close</button>
         </div>
     </div>

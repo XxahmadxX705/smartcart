@@ -51,7 +51,7 @@ export function renderProducts(products) {
             const quantity = parseInt(qtyvalue.innerText, 10);
             addToCart(product, quantity);
             renderCart();
-            showtoast(`${product.title} (x${qty}) has been added to the cart!`);
+            showtoast(`${product.title} (x${quantity}) has been added to the cart!`);
         });
 
         productlist.appendChild(card);
@@ -108,6 +108,10 @@ export function showtoast(message) {
 
 export function renderCart() {
     const cartitem = document.getElementById('cart-items');
+    const totalQty = getcart().reduce((sum, item) => sum + item.quantity, 0);
+    const cartCount = document.getElementById('cart-count');
+    cartCount.innerText = totalQty;
+    cartCount.hidden = totalQty === 0;
     cartitem.innerHTML = ``;
 
     getcart().forEach(product => {
@@ -397,12 +401,30 @@ export function setupCheckout() {
 
     document.getElementById('checkout-btn').addEventListener('click', () => {
         const cart = getcart();
-
+    
         if (cart.length === 0) {
             showtoast('Cart is empty. Nothing to checkout.');
             return;
         }
-
+    
+        const subtotal = gettotal();
+        const tax = subtotal * CHECKOUT_TAX_RATE;
+        const shipping = CHECKOUT_SHIPPING;
+        const total = subtotal + tax + shipping;
+        const remaining = budgetCounter.getBudget() - getOrdersTotal();
+    
+        if (budgetCounter.getBudget() > 0 && total > remaining) {
+            document.getElementById('declined-budget').innerText = '$' + remaining.toFixed(2);
+            document.getElementById('declined-subtotal').innerText = '$' + subtotal.toFixed(2);
+            document.getElementById('declined-tax').innerText = '$' + tax.toFixed(2);
+            document.getElementById('declined-shipping').innerText = '$' + shipping.toFixed(2);
+            document.getElementById('declined-total').innerText = '$' + total.toFixed(2);
+    
+            showCheckoutStep(declinedStep);
+            modal.hidden = false;
+            return;
+        }
+    
         fillCheckoutForm(cart);
         showCheckoutStep(formStep);
         modal.hidden = false;
@@ -439,10 +461,12 @@ export function setupCheckout() {
             const remaining = budget - getOrdersTotal();
 
             if (budget > 0 && total > remaining) {
-                showCheckoutStep(declinedStep);
-                document.getElementById('declined-name').innerText = name;
-                document.getElementById('declined-total').innerText = '$' + total.toFixed(2);
                 document.getElementById('declined-budget').innerText = '$' + remaining.toFixed(2);
+                document.getElementById('declined-subtotal').innerText = '$' + subtotal.toFixed(2);
+                document.getElementById('declined-tax').innerText = '$' + tax.toFixed(2);
+                document.getElementById('declined-shipping').innerText = '$' + CHECKOUT_SHIPPING.toFixed(2);
+            
+                showCheckoutStep(declinedStep);
                 return;
             }
 
