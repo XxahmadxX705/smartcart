@@ -67,50 +67,56 @@
     <main class="content">
 
         <section class="view" data-view="dashboard">
-            <h2>🏠 Dashboard</h2>
-            <p class="dashboard-welcome">Welcome back! Here's your shopping overview.</p>
+            <header class="page-header">
+                <span class="page-icon" aria-hidden="true">🏠</span>
+                <div>
+                    <h2>Dashboard</h2>
+                    <p class="dashboard-welcome">Welcome back! Here's your shopping overview.</p>
+                </div>
+            </header>
 
-            <div id="dashboard-summary">
-                <div class="stat-card">
-                    <span class="stat-icon">🛒</span>
-                    <div class="stat-info">
-                        <span class="stat-label">cart Items</span>
-                        <span class="stat-value"><span id="summary-items">0</span></span>
-                    </div>
+            <div id="dashboard-summary" class="metric-row">
+                <div class="metric-block">
+                    <span class="stat-label">Total Items</span>
+                    <span class="metric-rule"></span>
+                    <span class="stat-value"><span id="summary-items">0</span></span>
                 </div>
 
-                <div class="stat-card">
-                    <span class="stat-icon">🧾</span>
-                    <div class="stat-info">
-                        <span class="stat-label">Orders</span>
-                        <span class="stat-value"><span id="summary-orders">0</span></span>
-                    </div>
+                <div class="metric-block">
+                    <span class="stat-label">Orders</span>
+                    <span class="metric-rule"></span>
+                    <span class="stat-value"><span id="summary-orders">0</span></span>
                 </div>
 
-                <div class="stat-card">
-                    <span class="stat-icon">💵</span>
-                    <div class="stat-info">
-                        <span class="stat-label">Total Spent</span>
-                        <span class="stat-value">$<span id="summary-spent">0.00</span></span>
-                    </div>
+                <div class="metric-block">
+                    <span class="stat-label">Total Spent</span>
+                    <span class="metric-rule"></span>
+                    <span class="stat-value">$<span id="summary-spent">0.00</span></span>
                 </div>
 
-                <div class="stat-card">
-                    <span class="stat-icon">💰</span>
-                    <div class="stat-info">
-                        <span class="stat-label">Budget Left</span>
-                        <span class="stat-value">$<span id="summary-remaining">0.00</span></span>
-                    </div>
+                <div class="metric-block">
+                    <span class="stat-label">Budget Left</span>
+                    <span class="metric-rule"></span>
+                    <span class="stat-value">$<span id="summary-remaining">0.00</span></span>
                 </div>
             </div>
         </section>
 
         <section class="view" data-view="products" hidden>
-            <h2>📦 Products</h2>
-            <input type="text" id="search-input" placeholder="Search products...">
-            <select id="category-filter">
-                <option value="all">All Categories</option>
-            </select>
+            <header class="page-header">
+                <span class="page-icon" aria-hidden="true">📦</span>
+                <div>
+                    <h2>Products</h2>
+                </div>
+            </header>
+
+            <div class="products-toolbar">
+                <input type="text" id="search-input" placeholder="Search products...">
+                <select id="category-filter">
+                    <option value="all">All Categories</option>
+                </select>
+            </div>
+
             <div id="product-list"></div>
         </section>
 
@@ -120,9 +126,9 @@
             <div class="cart-footer">
                 <h3 id="cart-total">Total: $0.00</h3>
                 <div class="cart-actions">
-                    <button id="copy-cart">📋 Copy Cart List</button>
-                    <button id="clear-cart">🧹 Clear Cart</button>
-                    <button id="checkout-btn">💳 Checkout</button>
+                    <button id="copy-cart" class="btn-outline btn-outline-teal">📋 Copy Cart List</button>
+                    <button id="clear-cart" class="btn-outline btn-outline-danger">🧹 Clear Cart</button>
+                    <button id="checkout-btn" class="btn-primary">💳 Checkout</button>
                 </div>
             </div>
         </section>
