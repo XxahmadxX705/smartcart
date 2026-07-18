@@ -2,48 +2,69 @@
     box-sizing: border-box;
 }
 
+:root {
+    --forest: #063728;
+    --mint: #B7D7C8;
+    --bg: #F1F5EB;
+    --teal: #2A6B5A;
+    --danger: #F86359;
+    --white: #ffffff;
+    --card: #ffffff;
+    --radius: 12px;
+    --sidebar-width: 240px;
+}
+
 body {
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'DM Sans', sans-serif;
     margin: 0;
-    background-color: #f5f6fa;
-    color: #2d3436;
+    background-color: var(--bg);
+    color: var(--forest);
 }
 
 .sidebar {
-    width: 250px;
-    background-color: #1e272e;
+    width: var(--sidebar-width);
+    background-color: var(--forest);
     padding: 24px 16px;
     position: fixed;
+    top: 0;
+    left: 0;
     height: 100%;
+    display: flex;
+    flex-direction: column;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar h1 {
-    color: #ffffff;
-    font-size: 22px;
+    font-family: 'Playfair Display', serif;
+    color: var(--white);
+    font-size: 24px;
     margin: 0 0 30px 12px;
+}
+
+.sidebar nav {
+    flex: 1;
 }
 
 nav .menu-item {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #d2dae2;
+    color: rgba(255, 255, 255, 0.85);
     padding: 12px 16px;
     margin-bottom: 6px;
-    border-radius: 10px;
+    border-radius: var(--radius);
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
 }
 
 nav .menu-item:hover {
-    background-color: #2f3640;
-    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--white);
 }
 
 nav .menu-item.active {
-    background-color: #4f46e5;
-    color: #ffffff;
+    background-color: var(--mint);
+    color: var(--forest);
     font-weight: 600;
 }
 
@@ -52,13 +73,17 @@ nav br {
 }
 
 .content {
-    margin-left: 250px;
+    margin-left: var(--sidebar-width);
     padding: 32px;
+    min-height: 100vh;
+    background-color: var(--bg);
 }
 
 .view h2 {
     margin-top: 0;
+    font-family: 'Playfair Display', serif;
     font-size: 26px;
+    color: var(--forest);
 }
 
 #product-list {
@@ -468,7 +493,7 @@ button:hover {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #4f46e5, #1e272e);
+    background: linear-gradient(160deg, var(--forest) 0%, var(--teal) 55%, var(--bg) 100%);
 }
 
 #login-page[hidden] {
@@ -480,22 +505,24 @@ button:hover {
 }
 
 .login-card {
-    background: #ffffff;
+    background: var(--card);
     padding: 40px;
     border-radius: 16px;
     width: 100%;
     max-width: 360px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 32px rgba(6, 55, 40, 0.25);
     text-align: center;
 }
 
 .login-card h1 {
     margin: 0 0 8px;
-    color: #2d3436;
+    font-family: 'Playfair Display', serif;
+    color: var(--forest);
+    font-size: 32px;
 }
 
 .login-subtitle {
-    color: #636e72;
+    color: var(--teal);
     margin-bottom: 24px;
 }
 
@@ -503,32 +530,57 @@ button:hover {
     width: 100%;
     padding: 12px;
     margin-bottom: 12px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    border: 1px solid #d5e0d8;
+    border-radius: var(--radius);
     font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
     box-sizing: border-box;
+    color: var(--forest);
+}
+
+.login-card input:focus {
+    outline: none;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(42, 107, 90, 0.15);
 }
 
 .login-card button {
     width: 100%;
     padding: 12px;
     margin-top: 8px;
+    background-color: var(--forest);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.login-card button:hover {
+    background-color: var(--teal);
 }
 
 .login-hint {
     font-size: 12px;
-    color: #636e72;
+    color: #7a8f84;
     margin-top: 16px;
 }
 
 .logout-btn {
     width: calc(100% - 24px);
-    margin: 20px 12px 0;
-    background-color: #e74c3c;
+    margin: 20px 12px 12px;
+    background-color: var(--danger);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .logout-btn:hover {
-    background-color: #c0392b;
+    background-color: #e04e45;
 }
 .order-card {
     background: #ffffff;
@@ -681,8 +733,8 @@ button:hover {
     height: 18px;
     padding: 0 4px;
     border-radius: 50%;
-    background: #4f46e5;
-    color: #fff;
+    background: var(--mint);
+    color: var(--forest);
     font-size: 11px;
     font-weight: 700;
     line-height: 18px;
