@@ -612,7 +612,7 @@ export function renderAnalytics() {
     const values = Object.values(spending); 
 
     if (categories.length === 0){
-        ctx.fillStyle = '#637271';
+        ctx.fillStyle = '#2A6B5A';
         ctx.font = '16px Segoe UI';
         ctx.fillText('no data yet - place an order first', 20, 40);
         return;
@@ -629,7 +629,7 @@ export function renderAnalytics() {
         const barHeight = (values[index] / maxValue) * maxbarHeight;
         const y = basey - barHeight;
 
-        ctx.fillStyle = '#4f46e5';
+        ctx.fillStyle = '#063728';
         ctx.fillRect(x, y, barWidth, barHeight);
 
         ctx.fillStyle = '#2d3436';

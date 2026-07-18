@@ -270,10 +270,10 @@ button:hover {
     position: fixed;
     bottom: 24px;
     right: 24px;
-    background-color: #2d3436;
-    color: #ffffff;
+    background-color: var(--forest);
+    color: var(--white);
     padding: 14px 20px;
-    border-radius: 10px;
+    border-radius: var(--radius);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
     font-size: 14px;
     opacity: 0;
@@ -285,17 +285,6 @@ button:hover {
 .toast.show {
     opacity: 1;
     transform: translateY(0);
-}
-#budget-input {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-right: 8px;
-}
-
-.budget-summary {
-    margin-top: 20px;
-    font-size: 18px;
 }
 
 .page-header {
@@ -515,32 +504,141 @@ button:hover {
 }
 
 /* ---- Budget form ---- */
-.budget-form {
-    display: flex;
-    gap: 10px;
-    align-items: center;
+
+.field-label {
+    display: block;
+    font-size: 14px;
+    color: var(--forest);
+    font-weight: 600;
     margin-bottom: 8px;
+}
+
+.budget-form {
+    margin-bottom: 28px;
+    max-width: 640px;
+}
+
+.budget-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+#budget-input {
+    flex: 1;
+    min-width: 160px;
+    padding: 10px 14px;
+    border: 1px solid #d5e0d8;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--forest);
+    background: var(--white);
+    margin-right: 0;
+}
+
+.budget-metrics {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    max-width: 700px;
+    margin-bottom: 32px;
+}
+
+.metric-bar{
+    display: block;
+    width: 100%;
+    max-width: 80px;
+    height: 4px;
+    background: var(--mint);
+    border-radius: 2px;
+    margin-top: 4px;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--forest);
+    margin: 0 0 12px;
+}
+
+#transaction-list {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+    max-width: 700px;
+    margin-left: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+}
+
+.transaction-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+}
+
+.tx-type {
+    text-transform: capitalize;
+    min-width: 80px;
+    font-weight: 600;
+    color: #2d3436;
+}
+
+.tx-amount {
+    font-weight: 600;
+    min-width: 100px;
+}
+
+.tx-date {
+    margin-left: auto;
+    color: #636e72;
+    font-size: 13px;
+}
+
+.transaction-item.deposit .tx-amount {
+    color: #27ae60;
+}
+
+.transaction-item.withdraw .tx-amount {
+    color: #e74c3c;
 }
 
 /* ---- Analytics chart card ---- */
 .chart-card {
     display: inline-block;
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 14px;
-    padding: 20px 24px;
-    margin-top: 16px;
+    background: var(--card);
+    border: 1px solid #d5e0d8;
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-top: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.chart-card-header {
+    margin-bottom: 16px;
 }
 
 .chart-title {
-    margin: 0 0 12px;
-    font-size: 16px;
-    color: #2d3436;
+    margin: 0 0 4px;
+    font-size: 18px;
+    color: var(--forest);
+}
+.chart-subtitle {
+    font-size: 14px;
+    color: var(--teal);
+    margin: 0;
 }
 
 #spending-chart {
-    background: #ffffff;
+    background: var(--white);
     max-width: 100%;
 }
 
@@ -577,14 +675,23 @@ button:hover {
 }
 
 .modal-content {
-    background: #fff;
-    border-radius: 14px;
-    padding: 24px;
+    background: var(--card);
+    border: 1px solid #d5e0d8;
+    border-radius: var(--radius);
+    padding: 28px;
     width: 90%;
     max-width: 480px;
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h2 {
+    margin: 0 0 16px;
+    font-size: 24px;
+    color: var(--forest);
+    font-family: 'Playfair Display', serif;
 }
 
 .modal-close {
@@ -592,9 +699,15 @@ button:hover {
     top: 12px;
     right: 16px;
     background: none;
-    color: #636e72;
+    color: var(--teal);
     font-size: 24px;
     padding: 0;
+    cursor: pointer;
+    outline: none;
+}
+
+.modal-close:hover {
+    color: var(--forest);
 }
 
 .checkout-section {
@@ -602,18 +715,26 @@ button:hover {
 }
 
 .checkout-section h3 {
-    margin-bottom: 10px;
+    margin:0 0 10px;
     font-size: 15px;
+    color: var(--forest);
 }
 
 .checkout-section input {
     width: 100%;
-    padding: 10px;
+    padding: 10px 12px;
     margin-bottom: 8px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #d5e0d8;
     border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
     font-size: 14px;
+    color: var(--forest);
+    background: var(--white);
     box-sizing: border-box;
+}
+.checkout-section input:focus {
+    outline: none;
+    border-color: var(--teal);
 }
 
 .checkout-row {
@@ -621,13 +742,15 @@ button:hover {
     justify-content: space-between;
     padding: 4px 0;
     font-size: 14px;
+    color: var(--teal);
 }
 
 .checkout-total {
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid #d5e0d8;
     margin-top: 8px;
     padding-top: 8px;
     font-size: 16px;
+    color: var(--forest);
 }
 
 .checkout-row-inputs {
@@ -641,7 +764,7 @@ button:hover {
 
 .checkout-note {
     font-size: 12px;
-    color: #636e72;
+    color: var(--teal);
     margin-top: 8px;
 }
 
@@ -650,7 +773,16 @@ button:hover {
     overflow-y: auto;
     margin-bottom: 10px;
     font-size: 13px;
-    color: #636e72;
+    color: var(--teal);
+}
+#place-order-btn,
+#close-success-btn,
+#close-declined-btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
 /* ---- Login page ---- */
@@ -749,12 +881,17 @@ button:hover {
     background-color: #e04e45;
 }
 .order-card {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 14px;
+    background: var(--white);
+    border: 1px solid #d5e0d8;
+    border-radius: var(--radius);
     padding: 16px 20px;
     margin-bottom: 12px;
     max-width: 640px;
+}
+.order-card h3 {
+    margin: 0 0 6px;
+    color: var(--forest);
+    font-family: 'Playfair Display', serif;
 }
 .order-card-footer {
     display: flex;
@@ -765,11 +902,11 @@ button:hover {
 }
 
 .order-card-footer .remove-order {
-    background-color: #e74c3c;
+    background-color: var(--danger);
 }
 
 .order-card-footer .remove-order:hover {
-    background-color: #c0392b;
+    background-color: #e04e45;
 }
 
 .orders-footer {
@@ -782,7 +919,7 @@ button:hover {
 .order-items {
     margin: 10px 0;
     font-size: 14px;
-    color: #636e72;
+    color: var(--teal);
 }
 
 .add-row {
@@ -845,48 +982,6 @@ button:hover {
     background-color: var(--teal);
 }
 
-#transaction-list {
-    margin-top: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.transaction-item {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 12px 16px;
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-}
-
-.tx-type {
-    text-transform: capitalize;
-    min-width: 80px;
-    font-weight: 600;
-    color: #2d3436;
-}
-
-.tx-amount {
-    font-weight: 600;
-    min-width: 100px;
-}
-
-.tx-date {
-    margin-left: auto;
-    color: #636e72;
-    font-size: 13px;
-}
-
-.transaction-item.deposit .tx-amount {
-    color: #27ae60;
-}
-
-.transaction-item.withdraw .tx-amount {
-    color: #e74c3c;
-}
 .nav-icon-wrap {
     position: relative;
     display: inline-block;
