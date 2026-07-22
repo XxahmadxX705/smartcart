@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartCart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -28,12 +31,12 @@
             <section id="dashboard" class="menu-item active">
               <span>🏠</span>
                Dashboard
-            </section><br>
+            </section>
 
             <section id="products" class="menu-item">
                 <span>📦</span>
                  Products
-             </section><br>
+             </section>
 
              <section id="cart" class="menu-item">
                 <span class="nav-icon-wrap">
@@ -41,22 +44,22 @@
                     <span id="cart-count" class="cart-badge" hidden>0</span>
                 </span>
                 Cart
-            </section><br>
+            </section>
 
             <section id="orders" class="menu-item">
                 <span>🧾</span>
                  Orders
-             </section><br>
+             </section>
 
             <section id="budget" class="menu-item">
                  <span>💰</span>
                     Budget
-            </section><br>
+            </section>
 
              <section id="analytics" class="menu-item">
                 <span>📊</span>
                  Analytics
-             </section><br>
+             </section>
         </nav>
         <button id="logout-btn" class="logout-btn">Logout</button>
     </div>
@@ -64,50 +67,56 @@
     <main class="content">
 
         <section class="view" data-view="dashboard">
-            <h2>🏠 Dashboard</h2>
-            <p class="dashboard-welcome">Welcome back! Here's your shopping overview.</p>
+            <header class="page-header">
+                <span class="page-icon" aria-hidden="true">🏠</span>
+                <div>
+                    <h2>Dashboard</h2>
+                    <p class="dashboard-welcome">Welcome back! Here's your shopping overview.</p>
+                </div>
+            </header>
 
-            <div id="dashboard-summary">
-                <div class="stat-card">
-                    <span class="stat-icon">🛒</span>
-                    <div class="stat-info">
-                        <span class="stat-label">cart Items</span>
-                        <span class="stat-value"><span id="summary-items">0</span></span>
-                    </div>
+            <div id="dashboard-summary" class="metric-row">
+                <div class="metric-block">
+                    <span class="stat-label">Total Items</span>
+                    <span class="metric-rule"></span>
+                    <span class="stat-value"><span id="summary-items">0</span></span>
                 </div>
 
-                <div class="stat-card">
-                    <span class="stat-icon">🧾</span>
-                    <div class="stat-info">
-                        <span class="stat-label">Orders</span>
-                        <span class="stat-value"><span id="summary-orders">0</span></span>
-                    </div>
+                <div class="metric-block">
+                    <span class="stat-label">Orders</span>
+                    <span class="metric-rule"></span>
+                    <span class="stat-value"><span id="summary-orders">0</span></span>
                 </div>
 
-                <div class="stat-card">
-                    <span class="stat-icon">💵</span>
-                    <div class="stat-info">
-                        <span class="stat-label">Total Spent</span>
-                        <span class="stat-value">$<span id="summary-spent">0.00</span></span>
-                    </div>
+                <div class="metric-block">
+                    <span class="stat-label">Total Spent</span>
+                    <span class="metric-rule"></span>
+                    <span class="stat-value">$<span id="summary-spent">0.00</span></span>
                 </div>
 
-                <div class="stat-card">
-                    <span class="stat-icon">💰</span>
-                    <div class="stat-info">
-                        <span class="stat-label">Budget Left</span>
-                        <span class="stat-value">$<span id="summary-remaining">0.00</span></span>
-                    </div>
+                <div class="metric-block">
+                    <span class="stat-label">Budget Left</span>
+                    <span class="metric-rule"></span>
+                    <span class="stat-value">$<span id="summary-remaining">0.00</span></span>
                 </div>
             </div>
         </section>
 
         <section class="view" data-view="products" hidden>
-            <h2>📦 Products</h2>
-            <input type="text" id="search-input" placeholder="Search products...">
-            <select id="category-filter">
-                <option value="all">All Categories</option>
-            </select>
+            <header class="page-header">
+                <span class="page-icon" aria-hidden="true">📦</span>
+                <div>
+                    <h2>Products</h2>
+                </div>
+            </header>
+
+            <div class="products-toolbar">
+                <input type="text" id="search-input" placeholder="Search products...">
+                <select id="category-filter">
+                    <option value="all">All Categories</option>
+                </select>
+            </div>
+
             <div id="product-list"></div>
         </section>
 
@@ -117,64 +126,81 @@
             <div class="cart-footer">
                 <h3 id="cart-total">Total: $0.00</h3>
                 <div class="cart-actions">
-                    <button id="copy-cart">📋 Copy Cart List</button>
-                    <button id="clear-cart">🧹 Clear Cart</button>
-                    <button id="checkout-btn">💳 Checkout</button>
+                    <button id="copy-cart" class="btn-outline btn-outline-teal">📋 Copy Cart List</button>
+                    <button id="clear-cart" class="btn-outline btn-outline-danger">🧹 Clear Cart</button>
+                    <button id="checkout-btn" class="btn-primary">💳 Checkout</button>
                 </div>
             </div>
         </section>
         
         <section class="view" data-view="orders" hidden>
-            <h2>🧾 Orders</h2>
+            <header class="page-header">
+                <span class="page-icon" aria-hidden="true">🧾</span>
+                <div>
+                    <h2>Orders</h2>
+                </div>
+            </header>
             <div id="orders-list"></div>
             <div class="orders-footer">
-                <button id="clear-orders">🧹 Clear Orders</button>
+                <button id="clear-orders" class="btn-outline btn-outline-danger">🧹 Clear Orders</button>
             </div>
         </section>
 
         <section class="view" data-view="budget" hidden>
-            <h2>💰 Budget</h2>
+            <header class="page-header">
+                <span class="page-icon" aria-hidden="true">💰</span>
+                <div>
+                    <h2>Budget</h2>
+                </div>
+            </header>
             <div class="budget-form">
-                <input type="number" id="budget-input" placeholder="Enter amount">
-                <button id="deposit-btn">Deposit</button>
-                <button id="withdraw-btn">Withdraw</button>
-            </div>
-
-            <div id="budget-summary">
-                <div class="stat-card">
-                    <span class="stat-icon">🎯</span>
-                    <div class="stat-info">
-                        <span class="stat-label">Budget</span>
-                        <span class="stat-value">$<span id="budget-amount">0.00</span></span>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <span class="stat-icon">💵</span>
-                    <div class="stat-info">
-                        <span class="stat-label">Spent</span>
-                        <span class="stat-value">$<span id="spend-amount">0.00</span></span>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <span class="stat-icon">💰</span>
-                    <div class="stat-info">
-                        <span class="stat-label">Remaining</span>
-                        <span class="stat-value">$<span id="remaining-amount">0.00</span></span>
-                    </div>
+                <label for="budget-input" class="field-label">Budget</label>
+                <div class="budget-form-row">
+                    <input type="number" id="budget-input" placeholder="0.00">
+                    <button id="deposit-btn" class="btn-primary">Deposit</button>
+                    <button id="withdraw-btn" class="btn-outline btn-outline-danger">Withdraw</button>
                 </div>
             </div>
 
-            <h3>Transaction History</h3>
+            <div id="budget-summary" class="metric-row budget-metrics">
+                <div class="metric-block">
+                    <span class="stat-label">Budget</span>
+                    <span class="stat-value">$<span id="budget-amount">0.00</span></span>
+                    <span class="metric-bar"></span>
+                </div>
+
+                <div class="metric-block">
+                    <span class="stat-label">Spent</span>
+                    <span class="stat-value">$<span id="spend-amount">0.00</span></span>
+                    <span class="metric-bar"></span>
+                </div>
+
+                <div class="metric-block">
+                    <span class="stat-label">Remaining</span>
+                    <span class="stat-value">$<span id="remaining-amount">0.00</span></span>
+                    <span class="metric-bar"></span>
+                </div>
+            </div>
+
+            <h3 class="section-title">Transaction History</h3>
             <div id="transaction-list"></div>
 
         </section>
 
         <section class="view" data-view="analytics" hidden>
-            <h2>📊 Analytics</h2>
+            <header class="page-header">
+                <span class="page-icon" aria-hidden="true">📊</span>
+                <div>
+                    <h2>Analytics</h2>
+                    <p class="dashboard-welcome">Track your spending and discover insights.</p>
+                </div>
+            </header>
+
             <div class="chart-card">
-                <h3 class="chart-title">Spending by Category</h3>
+                <div class="chart-card-header">
+                    <h3 class="chart-title">Spending by Category</h3>
+                    <p class="chart-subtitle">Total spent across categories</p>
+                </div>
                 <canvas id="spending-chart" width="525" height="300"></canvas>
             </div>
         </section>
@@ -234,7 +260,7 @@
                 <p class="checkout-note">⚠️ This is a fake checkout — no real payment is processed.</p>
             </div>
 
-            <button id="place-order-btn" class="btn-success">Place Order</button>
+            <button id="place-order-btn" class="btn-primary">Place Order</button>
         </div>
 
         <!-- Step 2: Processing -->
@@ -250,7 +276,7 @@
             <p>Order #: <strong id="order-number"></strong></p>
             <p>Total paid: <strong id="success-total"></strong></p>
             <p class="checkout-note">This was a test order — nothing was actually charged.</p>
-            <button id="close-success-btn">Close</button>
+            <button id="close-success-btn" class="btn-primary">Close</button>
         </div>
 
         <!-- Step 4: Card Declined -->
@@ -263,7 +289,7 @@
             <p>Shipping cost: <strong id="declined-shipping">$0.00</strong></p>
             <p>Total price: <strong id="declined-total">$0.00</strong></p>
             <p class="checkout-note">Adjust your cart or deposit more budget, then try again.</p>
-            <button id="close-declined-btn">Close</button>
+            <button id="close-declined-btn" class="btn-primary">Close</button>
         </div>
     </div>
 </div>

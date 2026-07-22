@@ -13,19 +13,17 @@ export function renderProducts(products) {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
-            <img src="${product.thumbnail}" width="200">
+            <img src="${product.thumbnail}" alt="">
             <h3>${product.title}</h3>
-            <p>Price: $${product.price}</p>
-            <p>${product.category}</p>
-            
-            <div class="add-row">
+            <p class="product-price">$${product.price}</p>
+            <span class="category-pill">${product.category}</span>
 
+            <div class="add-row">
                 <div class="qty-pill">
                     <button type="button" class="qty-minus">−</button>
                     <span class="qty-value">1</span>
                     <button type="button" class="qty-plus">+</button>
                 </div>
-
                 <button type="button" class="add-cart-btn">Add to Cart</button>
             </div>
         `;
@@ -118,15 +116,21 @@ export function renderCart() {
         const item = document.createElement('div');
         item.className = 'cart-row';
         item.innerHTML = `
-         <img src="${product.thumbnail}" class="cart-thumb">
-         <span class="cart-name">${product.title} - $${product.price}</span>
+         <img src="${product.thumbnail}" class="cart-thumb" alt="">
+         <div class="cart-info">
+            <span class="cart-name">${product.title}</span>
+            <span class="cart-price">$${product.price}</span>
+         </div>
 
-         <span class="cart-controls">
-            <button class="minus">-</button>
-            <span style="font-size: 16px;">${product.quantity}</span>
-            <button class="plus">+</button>
-            <button class="remove">Remove</button>
-         </span>
+         <div class="cart-controls">
+            <span class="cart-qty-label">Quantity</span>
+            <div class="cart-qty">
+                <button type="button" class="minus">−</button>
+                <span class="cart-qty-value">${product.quantity}</span>
+                <button type="button" class="plus">+</button>
+                <button type="button" class="remove">Remove</button>
+            </div>
+         </div>
          `;
         
          item.querySelector('.plus').addEventListener('click', () =>{
@@ -608,7 +612,7 @@ export function renderAnalytics() {
     const values = Object.values(spending); 
 
     if (categories.length === 0){
-        ctx.fillStyle = '#637271';
+        ctx.fillStyle = '#2A6B5A';
         ctx.font = '16px Segoe UI';
         ctx.fillText('no data yet - place an order first', 20, 40);
         return;
@@ -625,7 +629,7 @@ export function renderAnalytics() {
         const barHeight = (values[index] / maxValue) * maxbarHeight;
         const y = basey - barHeight;
 
-        ctx.fillStyle = '#4f46e5';
+        ctx.fillStyle = '#063728';
         ctx.fillRect(x, y, barWidth, barHeight);
 
         ctx.fillStyle = '#2d3436';
